@@ -1,6 +1,5 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { useCompare } from '../context/CompareContext';
 
 const fmt = (n) => n ? (n >= 100000 ? `₹${(n/100000).toFixed(1)}L` : `₹${(n/1000).toFixed(0)}K`) : 'N/A';
 const fmtLPA = (n) => n ? `${Number(n).toFixed(1)} LPA` : 'N/A';
@@ -31,8 +30,6 @@ const Row = ({ label, values, highlight = false, format = (v) => v }) => {
 
 export default function CompareTable({ colleges }) {
   if (!colleges || colleges.length < 2) return null;
-
-  const COLS = colleges.map((c) => c.id);
 
   return (
     <div className="scroll-x rounded-2xl border border-white/10 overflow-hidden">

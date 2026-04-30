@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { collegesAPI, qaAPI, savedAPI } from '../api/client';
 import ReviewCard from '../components/ReviewCard';
@@ -23,7 +23,7 @@ export default function CollegeDetailPage() {
   const [showReviewForm, setShowReviewForm] = useState(false);
   const [newReview, setNewReview] = useState({ rating: 5, content: '', pros: '', cons: '', batch_year: new Date().getFullYear() });
 
-  const fetchData = async () => {
+  const fetchData = useCallback(async () => {
     try {
       const [{ data: collegeData }, { data: qaData }] = await Promise.all([
         collegesAPI.get(id),
@@ -41,11 +41,11 @@ export default function CollegeDetailPage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [id, isAuthenticated]);
 
   useEffect(() => {
     fetchData();
-  }, [id, isAuthenticated]);
+  }, [fetchData]);
 
   const handleSaveToggle = async () => {
     if (!isAuthenticated) return toast.error('Sign in to save');

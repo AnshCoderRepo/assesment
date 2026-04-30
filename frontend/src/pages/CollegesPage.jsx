@@ -40,13 +40,13 @@ export default function CollegesPage() {
     } catch (err) {}
   };
 
-  const fetchSavedIds = async () => {
+  const fetchSavedIds = useCallback(async () => {
     if (!isAuthenticated) return;
     try {
       const { data } = await savedAPI.getColleges();
       setSavedIds(data.map(c => c.id));
     } catch (err) {}
-  };
+  }, [isAuthenticated]);
 
   useEffect(() => {
     fetchMeta();
@@ -58,7 +58,7 @@ export default function CollegesPage() {
 
   useEffect(() => {
     fetchSavedIds();
-  }, [isAuthenticated]);
+  }, [fetchSavedIds]);
 
   const handleFilterChange = (e) => {
     const { name, value } = e.target;
