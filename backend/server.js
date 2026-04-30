@@ -7,7 +7,7 @@ const app = express();
 
 // 1. CORS CONFIGURATION
 const allowedOrigins = process.env.FRONTEND_URL 
-  ? process.env.FRONTEND_URL.split(',') 
+  ? process.env.FRONTEND_URL.split(',').map(o => o.trim()) 
   : ['http://localhost:3000'];
 
 app.use(cors({
@@ -33,6 +33,14 @@ app.use((req, res, next) => {
 
 // 3. TEST ROUTES
 app.get('/test', (req, res) => res.send('API working'));
+app.get('/api/test-db', async (req, res) => {
+  try {
+    const result = await db.query('SELECT NOW()');
+    res.json({ success: true, time: result.rows[0] });
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
 app.get('/api/health', (req, res) => res.json({ 
   status: 'ok', 
   timestamp: new Date(),
