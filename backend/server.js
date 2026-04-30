@@ -26,7 +26,19 @@ app.use((err, req, res, next) => {
   res.status(500).json({ error: 'Internal server error' });
 });
 
+const db = require('./db');
+
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
+
+app.listen(PORT, async () => {
   console.log(`🚀 CollegeCompass API running on http://localhost:${PORT}`);
+  
+  // Verify database connection
+  try {
+    await db.query('SELECT NOW()');
+    console.log('✅ Database connected successfully');
+  } catch (err) {
+    console.error('❌ Database connection failed:');
+    console.error(err.message);
+  }
 });
