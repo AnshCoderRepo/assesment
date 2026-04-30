@@ -41,6 +41,9 @@ app.get('/api/test-db', async (req, res) => {
     res.status(500).json({ success: false, error: err.message });
   }
 });
+app.get("/", (req, res) => {
+  res.send("API is running 🚀");
+});
 app.get('/api/health', (req, res) => res.json({ 
   status: 'ok', 
   timestamp: new Date(),
